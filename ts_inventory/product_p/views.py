@@ -8,6 +8,7 @@ from .forms import RegisterForm
 #from order.forms import RegisterForm as OrderForm
 # Create your views here.
 
+@method_decorator(login_required, name='dispatch')
 class ProductList(ListView):
     model = Product_p
     template_name = 'product.html'
@@ -17,7 +18,7 @@ class ProductList(ListView):
 class ProductCreate(FormView):
     template_name = 'register_product.html'
     form_class = RegisterForm
-    success_url = '/product/'
+    success_url = '/product_p/'
 
     def form_valid(self, form):
         product = Product_p(name_printer=form.data.get('name_printer'),
@@ -33,6 +34,7 @@ class ProductCreate(FormView):
         product.save()
         return super().form_valid(form)
 
+@method_decorator(login_required, name='dispatch')
 class ProductDetail(DetailView):
     template_name = 'product_detail.html'
     queryset = Product_p.objects.all()

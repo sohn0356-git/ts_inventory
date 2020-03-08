@@ -8,8 +8,9 @@
             <thead class = "thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">상품명</th>
-                    <th scope="col">가격</th>
+                    <th scope="col">사용프린터</th>
+                    <th scope="col">토너명</th>
+                    <th scope="col">재고</th>
                     <th scope="col">등록날짜</th>
                 </tr>
             </thead>
@@ -17,9 +18,10 @@
                 {% for product in product_list %}
                 <tr>
                     <th scope="row">{{ product.id }}</th>
-                <th><a href="/product_p/{{ product.id }}">{{ product.name }}</a></th>
-                    <th>{{ product.price|intcomma }}원</th>
-                    <th>{{ product.register_dttm|date:'Y-m-d H:i' }}</th>
+                <th><a href="/product_p/{{ product.id }}">{{ product.name_printer }}</a></th>
+                    <th>{{ product.stock }}</th>
+                    <th>{{ product.stock|intcomma }}원</th>
+                    <th>{{ product.register_date|date:'Y-m' }}</th>
                 </tr>                
                 {% endfor %}
             </tbody>
