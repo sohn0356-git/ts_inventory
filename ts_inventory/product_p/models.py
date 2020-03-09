@@ -11,7 +11,8 @@ class Product_p(models.Model):
     out_description = models.CharField(max_length=64,verbose_name="출고내역")
     stock = models.IntegerField(verbose_name = "현재재고")
     remark = models.CharField(max_length=64,verbose_name="비고")
-    register_date = models.DateField()
+    register_date_start = models.DateField()
+    register_date_end = models.DateField()
     #register_dttm = models.DateTimeField(auto_now_add=True, verbose_name="등록날짜")
 
     def __str__(self):
