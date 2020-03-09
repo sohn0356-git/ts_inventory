@@ -39,9 +39,14 @@ class RegisterForm(forms.Form):
     remark = forms.CharField(
         required=False, max_length = 64, label='비고'
     )
-    register_date = forms.DateField(
+    register_date_start = forms.DateField(
         error_messages={
-            'required' : '입고날짜를 입력해주세요'
+            'required' : '입고날짜의 시작을 입력해주세요'
+        },  widget=forms.DateInput(format='%m/%d/%Y') ,label='입고날짜'
+    )
+    register_date_end = forms.DateField(
+        error_messages={
+            'required' : '입고날짜의 끝을 입력해주세요'
         },  widget=forms.DateInput(format='%m/%d/%Y') ,label='입고날짜'
     )
     def clean(self):
@@ -55,5 +60,6 @@ class RegisterForm(forms.Form):
         out_description = cleaned_data.get('out_description')
         stock = cleaned_data.get('stock')
         remark = cleaned_data.get('remark')
-        register_date= cleaned_data.get('register_date')
+        register_date_start= cleaned_data.get('register_date_start')
+        register_date_end= cleaned_data.get('register_date_end')
 

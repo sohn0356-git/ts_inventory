@@ -13,6 +13,7 @@ class Product_p(models.Model):
     remark = models.CharField(max_length=64,verbose_name="비고")
     register_date_start = models.DateField()
     register_date_end = models.DateField()
+    register_date = models.DateField()
     #register_dttm = models.DateTimeField(auto_now_add=True, verbose_name="등록날짜")
 
     def __str__(self):

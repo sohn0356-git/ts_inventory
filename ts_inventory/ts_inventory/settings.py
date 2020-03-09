@@ -74,7 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ts_inventory.wsgi.application'
 
-
+DATE_INPUT_FORMATS = ['%Y-%M']
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
