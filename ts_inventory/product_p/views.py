@@ -6,6 +6,7 @@ from user.decorator import login_required, admin_required
 from django.utils.decorators import method_decorator
 from .forms import RegisterForm
 import pandas
+import datetime
 #from order.forms import RegisterForm as OrderForm
 # Create your views here.
 
@@ -23,24 +24,37 @@ class ProductCreate(FormView):
     def form_valid(self, form):
         register_date_start=form.data.get('register_date_start')
         register_date_end = form.data.get('register_date_end')
+        stock = int(form.data.get('stock'))
+        name_printer = form.data.get('name_printer')
         
-        dt_index = pandas.date_range(start=form.data.get('register_date_start'),
-        end = form.data.get('register_date_end'),freq='MS')
-        dt_list = set(dt_index.strftime("%Y-%m-%d").tolist())
-        for i in dt_list:
-            product = Product_p(name_printer=form.data.get('name_printer'),
-            name_toner=form.data.get('name_toner'),
-            category_toner=form.data.get('category_toner'),
-            pre_stock=form.data.get('pre_stock'),
-            in_stock=form.data.get('in_stock'),
-            out_stock=form.data.get('out_stock'),
-            out_description=form.data.get('out_description'),
-            stock=form.data.get('stock'),
-            remark=form.data.get('remark'),
-            register_date = i,
-            register_date_start=form.data.get('register_date_start'),
-            register_date_end = form.data.get('register_date_end'))
-            product.save()
+        if stock<0:
+            queryset = Product_p.objects.filter(register_date__range=[register_date_start,datetime.date(2099, 9, 30)])
+            for i in queryset:
+                if i.name_printer==name_printer:
+                    print(i.name_printer, name_printer)
+                    print(i.register_date)
+                    print(i.stock+stock)
+                    print("-------------------------------------")
+                    i.stock += stock
+                    i.save()
+        else :
+            dt_index = pandas.date_range(start=form.data.get('register_date_start'),
+            end = form.data.get('register_date_end'),freq='MS')
+            dt_list = set(dt_index.strftime("%Y-%m-%d").tolist())
+            for i in dt_list:
+                product = Product_p(name_printer=form.data.get('name_printer'),
+                name_toner=name_printer,
+                category_toner=form.data.get('category_toner'),
+                pre_stock=form.data.get('pre_stock'),
+                in_stock=form.data.get('in_stock'),
+                out_stock=form.data.get('out_stock'),
+                out_description=form.data.get('out_description'),
+                stock=form.data.get('stock'),
+                remark=form.data.get('remark'),
+                register_date = i,
+                register_date_start=form.data.get('register_date_start'),
+                register_date_end = form.data.get('register_date_end'))
+                product.save()
 
         
         return super().form_valid(form)

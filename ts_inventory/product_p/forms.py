@@ -45,9 +45,7 @@ class RegisterForm(forms.Form):
         },  widget=forms.DateInput(format='%m/%d/%Y') ,label='입고날짜'
     )
     register_date_end = forms.DateField(
-        error_messages={
-            'required' : '입고날짜의 끝을 입력해주세요'
-        },  widget=forms.DateInput(format='%m/%d/%Y') ,label='입고날짜'
+        required=False,  widget=forms.DateInput(format='%m/%d/%Y') ,label='입고날짜'
     )
     def clean(self):
         cleaned_data = super().clean()
