@@ -61,3 +61,19 @@ class RegisterForm(forms.Form):
         register_date_start= cleaned_data.get('register_date_start')
         register_date_end= cleaned_data.get('register_date_end')
 
+class SearchForm(forms.Form):
+    register_date_start = forms.DateField(
+        error_messages={
+            'required' : '날짜의 시작을 입력해주세요'
+        },  widget=forms.DateInput(format='%m/%d/%Y') ,label='시작날짜 : '
+    )
+    register_date_end = forms.DateField(
+        error_messages={
+            'required' : '날짜의 끝을 입력해주세요'
+        },  widget=forms.DateInput(format='%m/%d/%Y') ,label='끝 날짜 : '
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        register_date_start= cleaned_data.get('register_date_start')
+        register_date_end= cleaned_data.get('register_date_end')

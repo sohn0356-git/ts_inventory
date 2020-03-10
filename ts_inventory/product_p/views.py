@@ -1,19 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 from .models import Product_p
 from user.decorator import login_required, admin_required
 from django.utils.decorators import method_decorator
-from .forms import RegisterForm
+from .forms import RegisterForm, SearchForm
 import pandas
 import datetime
 #from order.forms import RegisterForm as OrderForm
 # Create your views here.
 
+class ProductSearch(FormView):
+    model = Product_p
+    form_class = SearchForm
+    template_name = 'search_product.html'
+    success_url = '/product_p/'
+    def form_valid(self, form):
+        return super().form_valid(form)
+
 class ProductList(ListView):
     model = Product_p
     template_name = 'product.html'
     context_object_name = 'product_list'
+    def get_queryset(self):
+        return Product_p.objects.all().order_by('register_date')
+
+
 
 @method_decorator(admin_required, name='dispatch')
 class ProductCreate(FormView):
@@ -36,7 +48,10 @@ class ProductCreate(FormView):
                     print(i.stock+stock)
                     print("-------------------------------------")
                     i.stock += stock
-                    i.save()
+                    if(i.stock<=0):
+                        i.delete()
+                    else:
+                        i.save()
         else :
             dt_index = pandas.date_range(start=form.data.get('register_date_start'),
             end = form.data.get('register_date_end'),freq='MS')
