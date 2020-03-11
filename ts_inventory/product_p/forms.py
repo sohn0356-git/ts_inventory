@@ -62,6 +62,10 @@ class RegisterForm(forms.Form):
         register_date_end= cleaned_data.get('register_date_end')
 
 class SearchForm(forms.Form):
+    def __init__(self,request,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.request = request
+
     register_date_start = forms.DateField(
         error_messages={
             'required' : '날짜의 시작을 입력해주세요'
@@ -77,3 +81,4 @@ class SearchForm(forms.Form):
         cleaned_data = super().clean()
         register_date_start= cleaned_data.get('register_date_start')
         register_date_end= cleaned_data.get('register_date_end')
+   

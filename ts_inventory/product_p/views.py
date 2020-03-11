@@ -16,14 +16,26 @@ class ProductSearch(FormView):
     template_name = 'search_product.html'
     success_url = '/product_p/'
     def form_valid(self, form):
+        self.request.session['start']= form.data.get('register_date_start')
+        self.request.session['end']= form.data.get('register_date_end')
         return super().form_valid(form)
+    
+    def get_form_kwargs(self, **kwargs):
+        kw = super().get_form_kwargs(**kwargs)
+        kw.update({
+            'request' : self.request
+        })
+        return kw
 
 class ProductList(ListView):
     model = Product_p
     template_name = 'product.html'
     context_object_name = 'product_list'
     def get_queryset(self):
-        return Product_p.objects.all().order_by('register_date')
+        register_date_start = self.request.session.get('start')
+        register_date_end = self.request.session.get('end')
+        return Product_p.objects.filter(register_date__range=[register_date_start,register_date_end]).order_by('register_date')
+        
 
 
 
