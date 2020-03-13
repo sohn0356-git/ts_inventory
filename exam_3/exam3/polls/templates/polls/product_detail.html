@@ -1,0 +1,16 @@
+{%if error_message %} <p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form>
+  <h1>This is detailPage</h1>
+{{ prod }}
+<li class="list-group-item">사용프린터 : {{ prod.name_printer}}개 </li>
+<li class="list-group-item">프린터색상 : {{ prod.color_printer}}개 </li>
+<li class="list-group-item">토너명 : {{ prod.name_toner}}개 </li>
+<li class="list-group-item">토너색상 : {{ prod.color_toner}}개 </li>
+<li class="list-group-item">재고 : {{ prod.stock}}개 </li>
+<li class="list-group-item">등록날짜 : {{ prod.register_date|date:'Y-m-d H:i' }} </li>
+
+
+  <!-- 해당 question의 선택지들을 하나씩 보여준다 .all()이 아닌것 주의 -->
+  
+</form>

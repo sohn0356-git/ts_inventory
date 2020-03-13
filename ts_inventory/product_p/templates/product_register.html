@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+     <title> 입출고 </title>
+     <style>
+	 body {
+		background-color:#fff; 
+	 }
+	 form fieldset{
+		margin-bottom:25px; 
+	 }
+	 form legend{
+		font-size:15px;
+		font-weight:600; 
+	 }
+	 form label.reg {
+		font-size:14px;
+		width:110px;
+		color:#390;
+		font-weight:bold;		
+		float:left;
+		text-align:right;
+		margin-right:10px;
+	 }
+	 form ul li{
+		list-style:none; 
+		margin: 15px 0;	
+		font-size:14px;	
+	 }
+ 
+
+	 #member, #stuffs {
+		width:50px; 
+	 }
+	 </style>
+  </head>
+  <body>
+	<form>
+    <fieldset>
+    <legend>
+    	<label for="today">Today</label>
+        <input type="datetime-local">     
+    </legend>
+    </fieldset>
+ <fieldset method="POST" action="." id="register">
+    <legend>입/출고 품목(프린터)을 선택하세요</legend>
+    	<ul>
+             
+	        <li>
+            	<label class="reg" for="spk">입/출고<small>(선택)</small></label>
+                <input type="radio" name="spk" id="spk" value="low" checked>입고
+                <input type="radio" name="spk" id="spk" value="middle">출고
+            </li>
+	        <li>
+            	<label class="reg" for="cert">프린터<small>(잉크젯)</small></label>
+                <input type="radio" name="cert" id="cert" value="toner">EPSON L7160
+                <input type="radio" name="cert" id="cert" value="toner">HP Officejet Pro 8600
+                <input type="radio" name="cert" id="cert" value="toner">EPSON WF-2521
+                <input type="radio" name="cert" id="cert" value="toner">HP Officejet Pro 8720
+                <input type="radio" name="cert" id="cert" value="toner">EPSON(홍보팀)
+            </li>
+            <li>
+                <label class="reg" for="color">구매색상</label>
+                <input type="text" id="color" list="Choies">
+                <datalist id="Choies">
+                    <option value = "잉크젯(검정)"></option>
+                    <option value = "잉크젯(빨강)"></option>
+                    <option value = "잉크젯(파랑)"></option>
+                    <option value = "잉크젯(노랑)"></option>
+                </datalist>
+            </li>     
+            <li>
+            	<label class="reg" for="cert">프린터<small>(토너)</small></label>
+                <input type="radio" name="cert" id="cert" value="ink">ML-8851N
+                <input type="radio" name="cert" id="cert" value="ink">SL-C486FW
+                <input type="radio" name="cert" id="cert" value="ink">SL-C473FW
+                <input type="radio" name="cert" id="cert" value="ink">SL-M4530ND
+                <input type="radio" name="cert" id="cert" value="ink">SL-M2950ND
+            </li>
+            <li>
+                <label class="reg" for="color">구매색상</label>
+                <input type="text" id="color" list="Choies">
+                <datalist id="Choies">
+                    <option value = "토너(검정)"></option>
+                    <option value = "토너(빨강)"></option>
+                    <option value = "토너(파랑)"></option>
+                    <option value = "토너(노랑)"></option>
+                 
+                </datalist>
+            </li>   
+            <li>
+            	<label class="reg" for="cert">프린터<small>(기타)</small></label>
+                <input type="radio" name="cert" id="cert" value="etc">폐토너통
+                <input type="radio" name="cert" id="cert" value="etc">이미징 유닛
+            </li>  
+                     
+             <li>
+            	<label class="reg" for="pre">주문수량</label>
+                <input type="text">
+                                  
+            </li>
+            <button type="submit" class="btn btn-primary">submit</button>
+        </ul>
+    </fieldset>
+
+
+

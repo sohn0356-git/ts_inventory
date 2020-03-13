@@ -1,0 +1,25 @@
+{%if error_message %} <p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="." method="POST">
+  {% csrf_token %}
+  {% for q in question %}
+
+  <!-- 해당 question의 선택지들을 하나씩 보여준다 .all()이 아닌것 주의 -->
+  
+    <h2>{{q.question_text}}</h2>
+        {% for choice in q.choice_set.all %}
+        {% ifequal choice.category 'color_toner' %}
+        <label class="reg" for="color">구매색상</label>
+                <input type="text" name="{{choice.category}}" id="color" list="Choies">
+                <datalist id="Choies">
+                    <option id="choice{{ forloop.counter }}" value = "{{choice.choice_text}}"></option>                 
+                </datalist>
+        {% else %}
+        <input type="radio" name="{{choice.category}}" id="choice{{ forloop.counter }}" value="{{choice.id}}">
+        <label for="choice{{ forloop.counter }}">{{choice.choice_text}}</label><br>
+        {% endifequal %}
+        {% endfor %}
+    {% endfor %}
+  <input type="submit" value="주문">
+  
+</form>
