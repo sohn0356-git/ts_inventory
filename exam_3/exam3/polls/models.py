@@ -42,3 +42,18 @@ class Product_p(models.Model):
         db_table = 'product_p'
         verbose_name = "상품"
         verbose_name_plural = "상품"
+
+class Product(models.Model):
+    name_product = models.CharField(max_length=64,verbose_name="사용프린터")
+    color_product = models.CharField(max_length=64,verbose_name="프린터색상")
+    stock = models.IntegerField(verbose_name = "현재재고")
+    register_date = models.DateField()
+    #register_dttm = models.DateTimeField(auto_now_add=True, verbose_name="등록날짜")
+
+    def __str__(self):
+        return self.name_product
+        
+    class Meta:
+        db_table = 'product'
+        verbose_name = "상품"
+        verbose_name_plural = "상품"

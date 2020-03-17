@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 # Create your views here.
 from django.http import HttpResponse
-from .models import Question, Product_p
+from .models import Question, Product
 import datetime
 
 def index(request):
@@ -48,20 +48,65 @@ def product_create(request):
     toner_color = request.POST.get('toner_color')
     etc = request.POST.get('etc')
     quantity = request.POST.get('quantity')
+
+
+    printer = request.POST.get('printer')
+    ink_Choices = request.POST.get('ink_Choices')
+    ink1 = request.POST.get('ink1')
+    selected_printer = {"EPSON L7160":0,"HP Officejet Pro 8600":1,"EPSON WF-2521":2,
+                        "HP Officejet Pro 8720":3,"EPSON(홍보팀)":4,"ML-8851N":5,
+                        "SL-C486FW":6,"SL-C473FW":7,"SL-M4530ND":8,"SL-M2950ND":9,
+                        "폐토너통":10,"이미징 유닛":11}
+    colors = []
+    colors.append(request.POST.get('color1'))
+    colors.append(request.POST.get('color2'))
+    colors.append(request.POST.get('color3'))
+    colors.append(request.POST.get('color4'))
+    colors.append(request.POST.get('color5'))
+    colors.append(request.POST.get('color6'))
+    colors.append(request.POST.get('color7'))
+    colors.append(request.POST.get('color8'))
+    colors.append(request.POST.get('color9'))
+    colors.append(request.POST.get('color10'))
+    colors.append(request.POST.get('color11'))
+    
+    
+        
     if quantity!='':
         quantity = int(quantity)
-    print("quantity : "+str(quantity))
+        print("quantity : "+str(quantity))
 
     #-------------debug------------------------#
-    # print("register_time : "+ register_time)
-    # print("spk : "+spk)
-    # print("ink : "+ink)
-    # print("toner : "+toner)
-    # print("toner_color : "+toner_color)
-    # print("etc : "+etc)
-    # print("quantity : "+quantity)
-    if register_time and spk and ink and ink_color and toner and toner_color and etc and quantity:
-        prod_other = Product_p.objects.filter(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color,register_date__range=[register_time,datetime.date(2099, 9, 30)])
+    # for idx, c in enumerate(colors):
+    #     if c:
+    #         if idx==selected_printer[printer]:
+    #             print("selected item is ",end=" : ")
+
+    #         print(idx+1,c)
+    
+    # if register_time:
+    #     print("register_time : "+ register_time)
+    # if ink1:
+    #     print("ink1 : "+ink1)
+    
+    # if spk:
+    #     print("spk : "+spk)
+    # if printer:
+    #     print("printer : "+printer)
+    # if ink_Choices:
+    #     print("ink_Choices : "+ink_Choices)
+    # if ink:
+    #     print("ink : "+ink)
+    # if toner:
+    #     print("toner : "+toner)
+    # if toner_color:
+    #     print("toner_color : "+toner_color)
+    # if etc:
+    #     print("etc : "+etc)
+    if printer:
+        color = colors[selected_printer[printer]]
+    if spk and register_time and printer and color and quantity:
+        prod_other = Product.objects.filter(name_product = printer, color_product = color, register_date__range=[register_time,datetime.date(2099, 9, 30)])
         if prod_other:
             for p in prod_other:
                 print(p)
@@ -74,60 +119,22 @@ def product_create(request):
                 else:
                     p.save()
         try:
-            prod = Product_p.objects.get(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color,register_date__range=[register_time,register_time])
+            prod = Product.objects.get(name_product = printer, color_product = color,register_date__range=[register_time,register_time])
         except:
-            p = Product_p(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color, category_toner = etc, stock = quantity, register_date = register_time)
+            p = Product(name_product = printer, color_product = color, stock = quantity, register_date = register_time)
             p.save()
 
-        products = Product_p.objects.filter(register_date__range=[register_time,register_time])
-        return render(request,'polls/product_detail.html',{"prod":products})
-
-
-
-        # try:
-        #     prod = Product_p.objects.get(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color,register_date__range=[register_time,register_time])
-        # except Product_p.DoesNotExist:
-        #     try:
-        #         prod_other = Product_p.objects.filter(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color,register_date__range=[register_time,datetime.date(2099, 9, 30)])
-        #     except Product_p.DoesNotExist:
-        #         p = Product_p(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color, category_toner = etc, stock = quantity, register_date = register_time)
-        #         p.save()
-        #         print("save1")
-        #         return render(request,'polls/product_detail.html',{"prod":p})
-        #     p = Product_p(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color, category_toner = etc, stock = quantity, register_date = register_time)
-        #     p.save()
-        #     print("save2")
-        #     for p in prod_other:
-        #         print(p)
-        #         if spk=="in":
-        #             p.stock += quantity
-        #         else:
-        #             p.stock -= quantity
-        #         if p.stock==0:
-        #             p.delete()
-        #         else:
-        #             p.save()
-        #     print("modify data1")
-        #     return render(request,'polls/product_detail.html',{"prod":prod_other})
+        products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
+        prod = {}
+        for p in products:
+            print(p,p.stock,p.register_date,sep=" : ")
+            if not prod.get(p.name_product):
+                prod[p.name_product]=p
         
-        # try:
-        #     prod_other = Product_p.objects.filter(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color,register_date__range=[register_time,datetime.date(2099, 9, 30)])
-        # except Product_p.DoesNotExist:
-        #     p = Product_p(name_printer = ink, color_printer = ink_color, name_toner = toner, color_toner = toner_color, category_toner = etc, stock = quantity, register_date = register_time)
-        #     p.save()
-        #     print("save3")
-        #     return render(request,'polls/product_detail.html',{"prod":p})
-        # for p in prod_other:
-        #     if spk=="in":
-        #         p.stock += quantity
-        #     else:
-        #         p.stock -= quantity
-        #     if p.stock==0:
-        #         p.delete()
-        #     else:
-        #         p.save()
-        # print("save4")
-        # print("modify data2")
-        # return render(request,'polls/product_detail.html',{"prod":prod_other})
+        for key, value in prod.items():
+            print(key,"  ",value.stock,sep=" ")
+
+        return render(request,'polls/product_detail.html',{"prod":prod})
+
     
     return redirect('polls:index')

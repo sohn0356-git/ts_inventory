@@ -4,10 +4,8 @@
   <h1>This is detailPage</h1>
 {% for p in prod %}
 <h1>--------------------------------------------------------------------</h1>
-<li class="list-group-item">사용프린터 : {{ p.name_printer}}개 </li>
-<li class="list-group-item">프린터색상 : {{ p.color_printer}}개 </li>
-<li class="list-group-item">토너명 : {{ p.name_toner}}개 </li>
-<li class="list-group-item">토너색상 : {{ p.color_toner}}개 </li>
+<li class="list-group-item">사용프린터 : {{ p.name_product}} </li>
+<li class="list-group-item">프린터색상 : {{ p.color_product}} </li>
 <li class="list-group-item">재고 : {{ p.stock}}개 </li>
 <li class="list-group-item">등록날짜 : {{ p.register_date }} </li>
 <h1>--------------------------------------------------------------------</h1>
