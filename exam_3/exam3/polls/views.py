@@ -69,6 +69,7 @@ def product_create(request):
     colors.append(request.POST.get('color9'))
     colors.append(request.POST.get('color10'))
     colors.append(request.POST.get('color11'))
+    colors.append(request.POST.get('color12'))
     
     
         
@@ -103,13 +104,13 @@ def product_create(request):
     #     print("toner_color : "+toner_color)
     # if etc:
     #     print("etc : "+etc)
+    
     if printer:
         color = colors[selected_printer[printer]]
     if spk and register_time and printer and color and quantity:
-        prod_other = Product.objects.filter(name_product = printer, color_product = color, register_date__range=[register_time,datetime.date(2099, 9, 30)])
-        if prod_other:
-            for p in prod_other:
-                print(p)
+        prod_next = Product.objects.filter(name_product = printer, color_product = color, register_date__range=[register_time,datetime.date(2099, 9, 30)])
+        if prod_next:
+            for p in prod_next:
                 if spk=="in":
                     p.stock += quantity
                 else:
@@ -118,23 +119,68 @@ def product_create(request):
                     p.delete()
                 else:
                     p.save()
-        try:
-            prod = Product.objects.get(name_product = printer, color_product = color,register_date__range=[register_time,register_time])
-        except:
-            p = Product(name_product = printer, color_product = color, stock = quantity, register_date = register_time)
-            p.save()
+    
+
+        prod_prev = Product.objects.filter(name_product = printer, color_product = color, register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
+
+        if not prod_prev:
+            if spk=="in":
+                p = Product(name_product = printer, color_product = color, stock = quantity, register_date = register_time)
+                p.save()
+            products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
+            prod = {}
+            prod_list = []
+            for p in products:
+                print(p,p.stock,p.register_date,sep=" : ")
+                if not prod.get(p.name_product):
+                    prod[p.name_product]=p
+            
+            for key, value in prod.items():
+                prod_list.append(value)
+                print(key,"  ",value.stock,sep=" ")
+            return render(request,'polls/product_detail.html',{"prod":prod_list})
+
+        if spk=="in":
+            cur_stock = prod_prev[0].stock + quantity
+        else:
+            cur_stock = prod_prev[0].stock - quantity
+        
+        p = Product(name_product = printer, color_product = color, stock = cur_stock, register_date = register_time)
+        p.save()
 
         products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
         prod = {}
+        prod_list = []
         for p in products:
             print(p,p.stock,p.register_date,sep=" : ")
             if not prod.get(p.name_product):
                 prod[p.name_product]=p
         
         for key, value in prod.items():
+            prod_list.append(value)
             print(key,"  ",value.stock,sep=" ")
 
-        return render(request,'polls/product_detail.html',{"prod":prod})
+        return render(request,'polls/product_detail.html',{"prod":prod_list})
 
     
     return redirect('polls:index')
+
+def search(request):
+    if request.method=='POST':
+        print("post")
+        register_time = request.POST.get('register_time')[0:10]
+        products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
+        prod = {}
+        prod_list = []
+        for p in products:
+            print(p,p.stock,p.register_date,sep=" : ")
+            if not prod.get(p.name_product):
+                prod[p.name_product]=p
+        
+        for key, value in prod.items():
+            prod_list.append(value)
+            print(key,"  ",value.stock,sep=" ")
+        return render(request,'polls/test.html',{"prod":prod_list})
+    else:  
+        print("get")
+        return render(request,'polls/test.html')

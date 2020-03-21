@@ -1,0 +1,124 @@
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-spacing:0;}
+  .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+  .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+  .tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
+  .tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
+  .tg .tg-kusv{background-color:#fffe65;border-color:inherit;text-align:left;vertical-align:top}
+  .tg .tg-baqh{text-align:center;vertical-align:top}
+  .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-nhep{background-color:#fffe65;border-color:inherit;text-align:center;vertical-align:middle}
+  .tg .tg-75eo{font-weight:bold;background-color:#fffe65;border-color:inherit;text-align:left;vertical-align:top}
+  </style>
+  <form action="{% url 'polls:search' %}" method="POST">
+   <fieldset>
+      <legend>
+        
+        {% csrf_token %}
+            <label for="today">Today</label>
+            <input type="datetime-local" name = "register_time">   
+            <button type="submit" class="btn btn-primary">검색</button>
+          
+               
+      </legend>
+      </fieldset>
+    </form>
+  <table class="tg">
+    <tr>
+      <br>
+      <th class="tg-c3ow" colspan="5">입/출고 현황</th>
+    </tr>
+    <tr>
+      <td class="tg-nhep">토너/잉크젯 명</td>
+      <td class="tg-nhep">사용 프린터</td>
+      <td class="tg-nhep">전월 재고</td>
+      <td class="tg-75eo">금월 입고</td>
+      <td class="tg-75eo">금월 출고</td>
+      <td class="tg-75eo">출고 내역</td>
+      <td class="tg-75eo">현재 재고</td>
+      <td class="tg-kusv">비고 사항</td>
+    </tr>
+    {% for p in prod %}    
+      <h1>--------------------------------------------------------------------</h1>
+      <li class="list-group-item">사용프린터 : {{ p.name_product}} </li>
+      <li class="list-group-item">프린터색상 : {{ p.color_product}} </li>
+      <li class="list-group-item">재고 : {{ p.stock}}개 </li>
+      <li class="list-group-item">등록날짜 : {{ p.register_date }} </li>
+      <h1>--------------------------------------------------------------------</h1>
+    {% endfor %}
+
+    <!-- <tr>
+      <br>
+      <th class="tg-c3ow" colspan="5">입/출고 현황</th>
+    </tr>
+    <tr>
+      <td class="tg-nhep">토너/잉크젯 명</td>
+      <td class="tg-nhep">사용 프린터</td>
+      <td class="tg-nhep">전월 재고</td>
+      <td class="tg-75eo">금월 입고</td>
+      <td class="tg-75eo">금월 출고</td>
+      <td class="tg-75eo">출고 내역</td>
+      <td class="tg-75eo">현재 재고</td>
+      <td class="tg-kusv">비고 사항</td>
+    </tr>
+    <tr>
+      <td class="tg-baqh">T00Q140 PB(잉크젯 검정)</td>
+      <td class="tg-baqh">EPSON L7160</td>
+      <td class="tg-baqh"></td>
+      <td class="tg-baqh"></td>
+      <td class="tg-baqh"></td>
+      <td class="tg-baqh"></td>
+      <td class="tg-baqh"></td>
+      <td class="tg-baqh"></td>
+    </tr>
+    <tr>
+      <td class="tg-9wq8">T00Q140 BK(잉크젯 검정)</td>
+      <td class="tg-9wq8">EPSON L7160</td>
+      <td class="tg-9wq8"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+    </tr>
+    <tr>
+      <td class="tg-c3ow">T00Q140 M(잉크젯 빨강)</td>
+      <td class="tg-c3ow">EPSON L7160</td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+    </tr>
+    <tr>
+      <td class="tg-c3ow">T00Q140 C(잉크젯 파랑)</td>
+      <td class="tg-c3ow">EPSON L7160</td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+    </tr>
+    <tr>
+      <td class="tg-c3ow">T00Q140 Y(잉크젯 노랑)</td>
+      <td class="tg-c3ow">EPSON L7160</td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+    </tr>
+    <tr>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+      <td class="tg-c3ow"></td>
+    </tr> -->
+  </table>
