@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
     url(r'^list/$', views.product_create, name='product_create'),
     url(r'^search/$',views.search, name = 'search'),
+    url(r'^login/',views.LoginView.as_view()),
+    url(r'^register/',views.RegisterView.as_view()),
 ]

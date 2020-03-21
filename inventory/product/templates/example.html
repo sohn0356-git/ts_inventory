@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+     <title> 입출고 </title>
+     <style>
+    body {
+      background-color:#fff; 
+    }
+    form fieldset{
+      margin-bottom:25px; 
+    }
+    form legend{
+      font-size:15px;
+      font-weight:600; 
+    }
+    form label.reg {
+      font-size:14px;
+      width:110px;
+      color:#390;
+      font-weight:bold;      
+      float:left;
+      text-align:right;
+      margin-right:10px;
+    }
+     form label.reg2 {
+      font-size:10px;
+      width:100px;
+      color:rgb(102, 12, 0);
+      font-weight:bold;      
+      float:left;
+      text-align:right;
+      margin-right:6px;
+    }
+    form ul li{
+      list-style:none; 
+      margin: 15px 0;   
+      font-size:14px;   
+    }
+ 
+
+    #member, #stuffs {
+      width:50px; 
+    }
+    </style>
+  </head>
+  <body>
+
+   <form action="{% url 'product_create' %}" method="POST">
+        {% csrf_token %}
+    <fieldset>
+    <legend>
+       <label for="today">Today</label>
+        <input type="datetime-local" id = 'time' name = "register_time">     
+    </legend>
+    </fieldset>
+ <fieldset id="register">
+    <legend>입/출고 품목(프린터)을 선택하세요</legend>
+       <ul>
+             
+           <li>
+               <label class="reg" for="spk">입/출고<small>(선택)</small></label>
+                <input type="radio" name="spk" id="spk" value="in" checked>입고
+                <input type="radio" name="spk" id="spk" value="out">출고
+            </li>
+            
+           <li>
+               <label class="reg" for="printer">프린터<small>(잉크젯)</small></label>
+                <input type="radio" name="printer" id="ink" value="EPSON L7160">EPSON L7160
+                <input type="radio" name="printer" id="ink" value="HP Officejet Pro 8600">HP Officejet Pro 8600
+                <input type="radio" name="printer" id="ink" value="EPSON WF-2521">EPSON WF-2521
+                <input type="radio" name="printer" id="ink" value="HP Officejet Pro 8720">HP Officejet Pro 8720
+                <input type="radio" name="printer" id="ink" value="EPSON(홍보팀)">EPSON(홍보팀)
+            </li>
+            <li>
+                <label class="reg2" for= "ink_Choices">EPSON L7160</label>
+                <input type="text" id="ink_Choices" list="ink1" name = "color1">
+                <datalist id="ink1">
+                    <option value = "T00Q140 PB"></option>
+                    <option value = "T00Q140 BK"></option>
+                    <option value = "T00Q140 M"></option>
+                    <option value = "T00Q140 C"></option>
+                    <option value = "T00Q140 Y"></option>
+                </datalist>              
+            </li>     
+            <li>
+                <label class="reg2" for= "ink_Choices">HP Officejet Pro 8600</label>
+                <input type="text" id="ink_Choices" list="ink2" name = "color2">
+                <datalist id="ink2">
+                    <option value = "HP950XL(흑백)"></option>
+                    <option value = "HP950XL(칼라)"></option>
+                </datalist>              
+            </li> 
+            </li>
+                <label class="reg2" for= "ink_Choices">EPSON WF-2521</label>
+                <input type="text" id="ink_Choices" list="ink3" name = "color3">
+                <datalist id="ink3">
+                    <option value = "T198(흑백)"></option>
+                    <option value = "T193(칼라)"></option>
+                </datalist>              
+            </li>
+             <li>
+                <label class="reg2" for= "ink_Choices">HP Officejet Pro 8720</label>
+                <input type="text" id="ink_Choices" list="ink4" name = "color4">
+                <datalist id="ink4">
+                    <option value = "HP955XL(흑백)"></option>
+                    <option value = "HP955XL(칼라)"></option>
+                </datalist>              
+            </li>
+            <li>
+                <label class="reg2" for= "ink_Choices">EPSON(홍보팀)</label>
+                <input type="text" id="ink_Choices" list="ink5" name = "color5">
+                <datalist id="ink5">
+                    <option value = "EPSON(홍보팀)"></option>
+                </datalist>              
+            </li>  
+            <li>
+               <label class="reg" for="printer">프린터<small>(토너)</small></label>
+                <input type="radio" name="printer" id="toner" value="ML-8851N">ML-8851N
+                <input type="radio" name="printer" id="toner" value="SL-C486FW">SL-C486FW
+                <input type="radio" name="printer" id="toner" value="SL-C473FW">SL-C473FW
+                <input type="radio" name="printer" id="toner" value="SL-M4530ND">SL-M4530ND
+                <input type="radio" name="printer" id="toner" value="SL-M2950ND">SL-M2950ND
+            </li>
+            <li>
+                <label class="reg2" for= "toner_Choices">ML-8851N</label>
+                <input type="text" id="toner_Choices" list="toner1" name = "color6">
+                <datalist id="toner1">
+                    <option value = "ML-D830L"></option>
+                </datalist>              
+            </li>     
+            <li>
+                <label class="reg2" for= "toner_Choices">SL-C486FW</label>
+                <input type="text" id="toner_Choices" list="toner2" name = "color7">
+                <datalist id="toner2">
+                    <option value = "CLT-K403S(흑백)"></option>
+                    <option value = "CLT-M403S(빨강)"></option>
+                    <option value = "CLT-Y403S(노랑)"></option>
+                    <option value = "CLT-C403S(파랑)"></option>
+                </datalist>              
+            </li> 
+            </li>
+                <label class="reg2" for= "toner_Choices">SL-C473FW</label>
+                <input type="text" id="toner_Choices" list="toner3" name = "color8">
+                <datalist id="toner3">
+                    <option value = "CLT-P405C(토너 1set)"></option>
+                </datalist>              
+            </li>
+             <li>
+                <label class="reg2" for= "toner_Choices">SL-M4530ND</label>
+                <input type="text" id="toner_Choices" list="toner4" name = "color9">
+                <datalist id="toner4">
+                    <option value = "MLT-D604L(검정)"></option>
+                </datalist>              
+            </li>
+            <li>
+                <label class="reg2" for= "toner_Choices">SL-M2950ND</label>
+                <input type="text" id="toner_Choices" list="toner5" name = "color10">
+                <datalist id="toner5">
+                    <option value = "MLT-D103S(검정)"></option>
+                </datalist>              
+            </li>
+            <li>
+               <label class="reg" for="printer">프린터<small>(기타)</small></label>
+                <input type="radio" name="printer" id="etc" value="폐토너통">폐토너통
+                <input type="radio" name="printer" id="etc" value="이미징 유닛">이미징 유닛
+            </li>
+            <li>
+                <label class="reg2" for= "etc_Choices">폐토너통</label>
+                <input type="text" id="etc_Choices" list="etc1" name = "color11">
+                <datalist id="etc1">
+                    <option value = "CLT-W406"></option>
+                </datalist>              
+            </li>
+            <li>
+                <label class="reg2" for= "etc_Choices">이미징 유닛</label>
+                <input type="text" id="etc_Choices" list="etc2" name = "color12">
+                <datalist id="etc2">
+                    <option value = "CLT-R406"></option>
+                </datalist>              
+            </li>  
+                    <br> 
+             <li>
+               <label class="reg" for="pre">주문수량</label>
+                <input type="text" name ="quantity">
+            </li>
+
+            <li>
+                <label class="reg" for="pre">출고내역</label>
+                 <input type="text" name ="description">
+             </li>
+            
+            <br>
+            <button type="submit" class="btn btn-primary">주문하기</button>
+        </ul>
+    </fieldset>
+
+

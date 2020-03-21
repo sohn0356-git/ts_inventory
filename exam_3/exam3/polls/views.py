@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic.edit import FormView
+from .forms import RegisterForm, LoginForm
+from django.contrib.auth.hashers import make_password
+from .models import User
 from django.views import generic
 # Create your views here.
 from django.http import HttpResponse
 from .models import Question, Product
-import datetime
+import datetime, calendar
 
 def index(request):
     # 모델클래스 Question을 가져온다. (pub_date 내림차순으로)
@@ -48,8 +52,7 @@ def product_create(request):
     toner_color = request.POST.get('toner_color')
     etc = request.POST.get('etc')
     quantity = request.POST.get('quantity')
-
-
+    description = request.POST.get('description')
     printer = request.POST.get('printer')
     ink_Choices = request.POST.get('ink_Choices')
     ink1 = request.POST.get('ink1')
@@ -125,13 +128,13 @@ def product_create(request):
 
         if not prod_prev:
             if spk=="in":
-                p = Product(name_product = printer, color_product = color, stock = quantity, register_date = register_time)
+                p = Product(name_product = printer, color_product = color, in_stock = quantity, out_stock = 0, month_in = 0, month_out = 0, stock = quantity, register_date = register_time)
                 p.save()
+            
             products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
             prod = {}
             prod_list = []
             for p in products:
-                print(p,p.stock,p.register_date,sep=" : ")
                 if not prod.get(p.name_product):
                     prod[p.name_product]=p
             
@@ -142,11 +145,15 @@ def product_create(request):
 
         if spk=="in":
             cur_stock = prod_prev[0].stock + quantity
+            p = Product(name_product = printer, color_product = color, in_stock = quantity, out_stock = 0,description=description, month_in = 0, month_out = 0, stock = cur_stock, register_date = register_time)
+            p.save()
         else:
             cur_stock = prod_prev[0].stock - quantity
+            p = Product(name_product = printer, color_product = color, in_stock = 0, out_stock = quantity,description=description, month_in = 0, month_out = 0, stock = cur_stock, register_date = register_time)
+            p.save()
         
-        p = Product(name_product = printer, color_product = color, stock = cur_stock, register_date = register_time)
-        p.save()
+        
+        
 
         products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
         prod = {}
@@ -162,25 +169,80 @@ def product_create(request):
 
         return render(request,'polls/product_detail.html',{"prod":prod_list})
 
-    
     return redirect('polls:index')
 
 def search(request):
-    if request.method=='POST':
-        print("post")
-        register_time = request.POST.get('register_time')[0:10]
+    if request.method=='GET':  
+        print("get")
+        return render(request,'polls/test.html')
+
+    print("post")
+    register_time = ""
+    if request.POST.get('register_time'):
+        register_time = request.POST.get('register_time')[0:10]  
+        print(register_time)
         products = Product.objects.filter(register_date__range=[datetime.date(1900,1,1),register_time]).order_by('-register_date')
         prod = {}
         prod_list = []
+        year = register_time[0:4]
+        month = register_time[5:7]
         for p in products:
             print(p,p.stock,p.register_date,sep=" : ")
             if not prod.get(p.name_product):
+                
+                start_date = register_time[0:8]+"01"
+                end_date = register_time[0:8]+str(calendar.monthrange(int(year),int(month))[1])
+                print(end_date)
+                month_prod = Product.objects.filter(name_product = p.name_product, color_product = p.color_product, register_date__range=[start_date,end_date])
+                month_in = 0
+                month_out = 0
+                month_description = []
+                if month_prod:
+                    for mp in month_prod:
+                        month_in += mp.in_stock
+                        month_out += mp.out_stock
+                        if mp.description:
+                            month_description.append(mp.description)
+                p.month_in = month_in
+                p.month_out = month_out
+                p.description = ', '.join(month_description)
                 prod[p.name_product]=p
         
         for key, value in prod.items():
             prod_list.append(value)
             print(key,"  ",value.stock,sep=" ")
         return render(request,'polls/test.html',{"prod":prod_list})
-    else:  
-        print("get")
-        return render(request,'polls/test.html')
+    return render(request,'polls/test.html')
+
+
+def home(request):
+    return render(request,'index.html', { 'email' : request.session.get('user')})
+
+class RegisterView(FormView):
+    template_name = 'register.html'
+    form_class = RegisterForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        user = User(userid=form.data.get('userid'), 
+        password = make_password(form.data.get('password')),
+        level = 'user')
+        user.save()
+        return super().form_valid(form)
+
+
+
+class LoginView(FormView):
+    template_name = 'login.html'
+    form_class = LoginForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        self.request.session['user'] = form.data.get('userid')
+        return super().form_valid(form)
+
+        
+def logout(request):
+    if 'user' in request.session:
+        del(request.session['user'])
+    return redirect('/')

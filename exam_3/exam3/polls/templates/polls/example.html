@@ -50,7 +50,7 @@
     <fieldset>
     <legend>
        <label for="today">Today</label>
-        <input type="datetime-local" name = "register_time">     
+        <input type="datetime-local" id = 'time' name = "register_time">     
     </legend>
     </fieldset>
  <fieldset id="register">
@@ -183,6 +183,11 @@
                <label class="reg" for="pre">주문수량</label>
                 <input type="text" name ="quantity">
             </li>
+
+            <li>
+                <label class="reg" for="pre">출고내역</label>
+                 <input type="text" name ="description">
+             </li>
             
             <br>
             <button type="submit" class="btn btn-primary">주문하기</button>

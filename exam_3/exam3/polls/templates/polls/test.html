@@ -8,70 +8,67 @@
   .tg .tg-baqh{text-align:center;vertical-align:top}
   .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
   .tg .tg-nhep{background-color:#fffe65;border-color:inherit;text-align:center;vertical-align:middle}
-  .tg .tg-75eo{font-weight:bold;background-color:#fffe65;border-color:inherit;text-align:left;vertical-align:top}
+  .tg .tg-75eo{font-weight:bold;background-color:#fffe65;border-color:inherit;text-align:center;vertical-align:top}
+  
+  .tg .tg-toner_name{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-printer{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-pre_stock{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-in_month{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-out_month{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-out_list{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-now_stock{border-color:inherit;text-align:center;vertical-align:top}
+  .tg .tg-etc{border-color:inherit;text-align:center;vertical-align:top}
+  
   </style>
-  <form action="{% url 'polls:search' %}" method="POST">
-   <fieldset>
-      <legend>
-        
-        {% csrf_token %}
-            <label for="today">Today</label>
-            <input type="datetime-local" name = "register_time">   
-            <button type="submit" class="btn btn-primary">검색</button>
-          
-               
-      </legend>
-      </fieldset>
-    </form>
+   <form action="{% url 'polls:search' %}" method="POST">
+    <fieldset>
+       <legend>
+         
+         {% csrf_token %}
+             <label for="today">Today</label>
+             <input type="datetime-local" name = "register_time">   
+             <button type="submit" class="btn btn-primary">검색</button>
+           
+                
+       </legend>
+       </fieldset>
+     </form>
   <table class="tg">
     <tr>
       <br>
       <th class="tg-c3ow" colspan="5">입/출고 현황</th>
     </tr>
+    
     <tr>
       <td class="tg-nhep">토너/잉크젯 명</td>
       <td class="tg-nhep">사용 프린터</td>
-      <td class="tg-nhep">전월 재고</td>
       <td class="tg-75eo">금월 입고</td>
       <td class="tg-75eo">금월 출고</td>
       <td class="tg-75eo">출고 내역</td>
       <td class="tg-75eo">현재 재고</td>
-      <td class="tg-kusv">비고 사항</td>
+      
     </tr>
     {% for p in prod %}    
-      <h1>--------------------------------------------------------------------</h1>
-      <li class="list-group-item">사용프린터 : {{ p.name_product}} </li>
-      <li class="list-group-item">프린터색상 : {{ p.color_product}} </li>
-      <li class="list-group-item">재고 : {{ p.stock}}개 </li>
-      <li class="list-group-item">등록날짜 : {{ p.register_date }} </li>
-      <h1>--------------------------------------------------------------------</h1>
-    {% endfor %}
-
-    <!-- <tr>
-      <br>
-      <th class="tg-c3ow" colspan="5">입/출고 현황</th>
-    </tr>
     <tr>
-      <td class="tg-nhep">토너/잉크젯 명</td>
-      <td class="tg-nhep">사용 프린터</td>
-      <td class="tg-nhep">전월 재고</td>
-      <td class="tg-75eo">금월 입고</td>
-      <td class="tg-75eo">금월 출고</td>
-      <td class="tg-75eo">출고 내역</td>
-      <td class="tg-75eo">현재 재고</td>
-      <td class="tg-kusv">비고 사항</td>
+      <td class="tg-toner_name"> {{ p.name_product}} </td>
+      <td class="tg-printer">{{ p.color_product}}</td>
+      <td class="tg-in_month">{{ p.month_in}}</td>
+      <td class="tg-out_month">{{ p.month_out}}</td>
+      <td class="tg-out_list">{{ p.description }}</td>
+      <td class="tg-now_stock">{{ p.stock}}</td>
     </tr>
-    <tr>
-      <td class="tg-baqh">T00Q140 PB(잉크젯 검정)</td>
-      <td class="tg-baqh">EPSON L7160</td>
-      <td class="tg-baqh"></td>
-      <td class="tg-baqh"></td>
-      <td class="tg-baqh"></td>
-      <td class="tg-baqh"></td>
-      <td class="tg-baqh"></td>
-      <td class="tg-baqh"></td>
-    </tr>
-    <tr>
+  {% endfor %}
+   <!-- <tr>
+      <td class="tg-toner_name">T00Q140 PB(잉크젯 검정)</td>
+      <td class="tg-printer">EPSON L7160</td>
+      <td class="tg-pre_stock">5</td>
+      <td class="tg-in_month">2</td>
+      <td class="tg-out_month">3</td>
+      <td class="tg-out_list">정보관리팀(1)</td>
+      <td class="tg-now_stock">4</td>
+      <td class="tg-etc"></td>
+    </tr> -->
+     <!-- <tr>
       <td class="tg-9wq8">T00Q140 BK(잉크젯 검정)</td>
       <td class="tg-9wq8">EPSON L7160</td>
       <td class="tg-9wq8"></td>
